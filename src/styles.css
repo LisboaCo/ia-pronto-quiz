@@ -97,7 +97,6 @@
   --shadow-gold: 0 18px 45px -20px color-mix(in oklab, var(--gold) 55%, transparent);
 }
 
-
 @layer base {
   * {
     border-color: var(--color-border);
@@ -106,5 +105,32 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
+
+@utility text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility surface-card {
+  background: var(--gradient-surface);
+  border: 1px solid var(--color-border);
+}
+
+@utility shadow-gold {
+  box-shadow: var(--shadow-gold);
+}
+

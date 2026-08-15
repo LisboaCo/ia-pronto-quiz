@@ -34,7 +34,7 @@ export const Route = createFileRoute("/painel")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: PainelPage;
+  component: PainelPage,
 });
 
 function PainelPage() {

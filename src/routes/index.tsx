@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowLeft, Check, Share2, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Share2 } from "lucide-react";
 
 import { CasaMetafora } from "@/components/CasaMetafora";
 import { Button } from "@/components/ui/button";
@@ -53,14 +53,28 @@ type Etapa = "abertura" | "divisoria" | "pergunta" | "cadastro" | "resultado";
 
 const PONTOS = [2, 1, 0];
 
+function corPorFaixa(valor: number) {
+  if (valor >= 8) return "var(--flag-safe)";
+  if (valor >= 6) return "var(--flag-care)";
+  return "var(--flag-danger)";
+}
+
 function Marca() {
   return (
     <header className="flex items-center justify-center gap-2 py-5">
-      <Sparkles className="size-4 text-primary" aria-hidden />
-      <span className="font-display text-sm font-bold tracking-[0.22em] text-primary uppercase">
-        Diagnóstico IA
-      </span>
+      <Chip cor="var(--v4-red)">Diagnóstico IA</Chip>
     </header>
+  );
+}
+
+function Chip({ children, cor }: { children: React.ReactNode; cor: string }) {
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+      style={{ background: `color-mix(in srgb, ${cor} 12%, white)`, color: cor }}
+    >
+      {children}
+    </span>
   );
 }
 
@@ -119,27 +133,25 @@ function DiagnosticoPage() {
 
   if (etapa === "abertura") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col px-6">
+      <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
         <Marca />
-        <div className="flex flex-1 flex-col justify-center gap-8 py-6">
-          <CasaMetafora etapa={3} className="mx-auto h-32 w-44 opacity-90" />
-          <div className="space-y-4 text-center">
-            <h1 className="text-4xl leading-[1.05] font-extrabold">
-              Sua empresa está <span className="text-gradient-gold">pronta para a IA?</span>
-            </h1>
-            <p className="text-base text-muted-foreground">
-              Descubra o nível de maturidade do seu negócio em 3 minutos
-            </p>
+        <div className="flex flex-1 flex-col justify-center py-6">
+          <div className="surface-card rounded-2xl p-5">
+            <CasaMetafora etapa={3} className="mx-auto h-28 w-40" />
+            <div className="mt-5 space-y-3 text-center">
+              <h1 className="text-3xl leading-tight font-bold text-ink">
+                Sua empresa está pronta para a <span className="text-primary">IA</span>?
+              </h1>
+              <p className="text-xs text-ink-muted">
+                Descubra o nível de maturidade do seu negócio em 3 minutos
+              </p>
+            </div>
+            <Button size="lg" className="mt-6 h-12 w-full rounded-lg font-semibold" onClick={iniciar}>
+              Começar diagnóstico
+            </Button>
           </div>
-          <Button
-            size="lg"
-            className="h-14 w-full text-base font-bold shadow-gold"
-            onClick={iniciar}
-          >
-            Começar diagnóstico
-          </Button>
         </div>
-        <footer className="pb-8 text-center text-xs tracking-wide text-muted-foreground">
+        <footer className="pb-8 text-center text-xs text-ink-muted">
           15 perguntas · resultado imediato
         </footer>
       </main>
@@ -148,27 +160,24 @@ function DiagnosticoPage() {
 
   if (etapa === "divisoria") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col px-6">
+      <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
         <Marca />
-        <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <CasaMetafora
-            etapa={pilarAtual.numero as 1 | 2 | 3}
-            className="h-36 w-52"
-          />
-          <div className="space-y-3">
-            <p className="text-xs font-bold tracking-[0.3em] text-primary uppercase">
-              Pilar {pilarAtual.numero}
-            </p>
-            <h2 className="text-4xl font-extrabold">{pilarAtual.nome}</h2>
-            <p className="text-sm text-muted-foreground">{pilarAtual.legenda}</p>
+        <div className="flex flex-1 flex-col justify-center">
+          <div className="surface-card rounded-2xl p-5 text-center">
+            <CasaMetafora etapa={pilarAtual.numero as 1 | 2 | 3} className="mx-auto h-32 w-44" />
+            <div className="mt-5 space-y-3">
+              <p className="micro-label">Pilar {pilarAtual.numero}</p>
+              <h2 className="text-2xl font-bold text-ink">{pilarAtual.nome}</h2>
+              <p className="text-xs text-ink-muted">{pilarAtual.legenda}</p>
+            </div>
+            <Button
+              size="lg"
+              className="mt-6 h-12 w-full rounded-lg font-semibold"
+              onClick={() => setEtapa("pergunta")}
+            >
+              Continuar
+            </Button>
           </div>
-          <Button
-            size="lg"
-            className="h-14 w-full text-base font-bold"
-            onClick={() => setEtapa("pergunta")}
-          >
-            Continuar
-          </Button>
         </div>
         <div className="h-10" />
       </main>
@@ -178,15 +187,15 @@ function DiagnosticoPage() {
   if (etapa === "pergunta") {
     const progresso = ((indice + 1) / PERGUNTAS.length) * 100;
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col px-6">
-        <div className="space-y-3 pt-6">
-          <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
-            <span>
+      <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
+        <div className="space-y-2 pt-6">
+          <div className="flex items-center justify-between text-[11px] font-medium tracking-wider uppercase">
+            <span className="text-ink-muted">
               Pergunta {indice + 1} de {PERGUNTAS.length}
             </span>
-            <span className="text-primary uppercase">{pilarAtual.nome}</span>
+            <span className="font-semibold text-primary">{pilarAtual.nome}</span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+          <div className="h-1 w-full overflow-hidden rounded-full bg-hairline">
             <div
               className="h-full rounded-full bg-primary transition-all duration-300"
               style={{ width: `${progresso}%` }}
@@ -194,17 +203,17 @@ function DiagnosticoPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col justify-center gap-6 py-8">
-          <h2 className="text-2xl leading-snug font-bold">{pergunta.texto}</h2>
-          <div className="space-y-3">
+        <div className="flex flex-1 flex-col justify-center gap-5 py-8">
+          <h2 className="text-xl leading-snug font-bold text-ink">{pergunta.texto}</h2>
+          <div className="space-y-2.5">
             {pergunta.opcoes.map((opcao, i) => (
               <button
                 key={opcao}
                 type="button"
                 onClick={() => responder(i)}
-                className="surface-card flex w-full items-center gap-3 rounded-xl px-5 py-5 text-left text-base font-medium transition-all active:scale-[0.98] hover:border-primary/60"
+                className="surface-card flex w-full items-center gap-3 rounded-2xl px-4 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-row-hover focus-visible:border-primary focus-visible:bg-v4-red-soft focus-visible:outline-none active:border-primary active:bg-v4-red-soft"
               >
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-primary/50 text-xs font-bold text-primary">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-hairline text-[11px] font-semibold text-ink-muted">
                   {String.fromCharCode(65 + i)}
                 </span>
                 {opcao}
@@ -214,7 +223,7 @@ function DiagnosticoPage() {
         </div>
 
         <div className="pb-8">
-          <Button variant="ghost" className="text-muted-foreground" onClick={voltar}>
+          <Button variant="ghost" className="text-ink-muted" onClick={voltar}>
             <ArrowLeft className="size-4" /> Voltar
           </Button>
         </div>
@@ -299,45 +308,51 @@ function Cadastro({
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col px-6">
+    <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
       <Marca />
-      <form onSubmit={enviar} className="flex flex-1 flex-col gap-5 pb-10">
+      <form onSubmit={enviar} className="surface-card mb-10 space-y-4 rounded-2xl p-5">
         <div className="space-y-2">
-          <h1 className="text-3xl font-extrabold">
-            Seu diagnóstico está <span className="text-gradient-gold">pronto!</span>
+          <h1 className="text-2xl font-bold text-ink">
+            Seu diagnóstico está <span className="text-primary">pronto</span>
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-ink-muted">
             Preencha seus dados para liberar o resultado completo.
           </p>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="nome">Nome</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="nome" className="micro-label">
+            Nome
+          </Label>
           <Input
             id="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             maxLength={120}
-            className="h-12"
+            className="h-11 rounded-md"
             autoComplete="name"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="whatsapp">WhatsApp</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="whatsapp" className="micro-label">
+            WhatsApp
+          </Label>
           <Input
             id="whatsapp"
             inputMode="tel"
             placeholder="(11) 90000-0000"
             value={whatsapp}
             onChange={(e) => setWhatsapp(mascaraWhatsapp(e.target.value))}
-            className="h-12"
+            className="h-11 rounded-md"
             autoComplete="tel"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email">E-mail</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="micro-label">
+            E-mail
+          </Label>
           <Input
             id="email"
             type="email"
@@ -345,27 +360,31 @@ function Cadastro({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             maxLength={160}
-            className="h-12"
+            className="h-11 rounded-md"
             autoComplete="email"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="segmento">Segmento do negócio</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="segmento" className="micro-label">
+            Segmento do negócio
+          </Label>
           <Input
             id="segmento"
             value={segmento}
             onChange={(e) => setSegmento(e.target.value)}
             maxLength={120}
-            className="h-12"
+            className="h-11 rounded-md"
             placeholder="Ex: clínica, varejo, indústria"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="faturamento">Faturamento mensal</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="faturamento" className="micro-label">
+            Faturamento mensal
+          </Label>
           <Select value={faixa} onValueChange={setFaixa}>
-            <SelectTrigger id="faturamento" className="h-12 w-full">
+            <SelectTrigger id="faturamento" className="h-11 w-full rounded-md">
               <SelectValue placeholder="Selecione uma faixa" />
             </SelectTrigger>
             <SelectContent>
@@ -378,25 +397,25 @@ function Cadastro({
           </Select>
         </div>
 
-        <label className="surface-card flex items-start gap-3 rounded-xl p-4 text-sm leading-snug">
+        <label className="flex items-start gap-3 rounded-2xl border border-hairline bg-row-hover p-4 text-xs leading-snug">
           <Checkbox
             checked={consentimento}
             onCheckedChange={(v) => setConsentimento(v === true)}
             className="mt-0.5"
           />
-          <span className="text-muted-foreground">
+          <span className="text-ink-muted">
             Autorizo o contato sobre meu diagnóstico e concordo com o uso dos meus dados conforme a
             LGPD.
           </span>
         </label>
 
-        {erro && <p className="text-sm font-medium text-destructive">{erro}</p>}
+        {erro && <p className="text-xs font-medium text-destructive">{erro}</p>}
 
         <Button
           type="submit"
           size="lg"
           disabled={enviando}
-          className="h-14 w-full text-base font-bold shadow-gold"
+          className="h-12 w-full rounded-lg font-semibold"
         >
           Ver meu resultado
         </Button>
@@ -406,16 +425,21 @@ function Cadastro({
 }
 
 function BarraPilar({ nome, valor }: { nome: string; valor: number }) {
+  const cor = corPorFaixa(valor);
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center justify-between text-sm">
-        <span className="font-semibold">{nome}</span>
-        <span className="font-display font-bold text-primary">{valor}/10</span>
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] font-medium tracking-wider text-ink-muted uppercase">
+          {nome}
+        </span>
+        <span className="text-sm font-bold tracking-tight" style={{ color: cor }}>
+          {valor}/10
+        </span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-hairline">
         <div
-          className="h-full rounded-full bg-primary transition-all duration-700"
-          style={{ width: `${(valor / 10) * 100}%` }}
+          className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${(valor / 10) * 100}%`, background: cor }}
         />
       </div>
     </div>
@@ -433,6 +457,9 @@ function Resultado({
 }) {
   const info = NIVEIS[nivel];
   const etapa = (["V0", "V1", "V2", "V3"].indexOf(nivel) as 0 | 1 | 2 | 3) ?? 0;
+  const corNivel = ["var(--flag-danger)", "var(--flag-warn)", "var(--flag-care)", "var(--flag-safe)"][
+    etapa
+  ]!;
 
   async function compartilhar() {
     const texto = `Meu diagnóstico de maturidade em IA: nível ${info.codigo} ${info.nome}. ${info.frase}`;
@@ -448,49 +475,58 @@ function Resultado({
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10">
+    <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-10">
       <Marca />
-      <div className="surface-card shadow-gold rounded-2xl p-6 text-center">
-        <CasaMetafora etapa={etapa} className="mx-auto h-32 w-48" />
-        <p className="mt-4 text-xs font-bold tracking-[0.3em] text-muted-foreground uppercase">
-          Seu nível
-        </p>
-        <h1 className="font-display text-5xl font-extrabold">
-          <span className="text-gradient-gold">{info.codigo}</span>{" "}
-          <span className="text-foreground">{info.nome}</span>
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{info.frase}</p>
+      <div className="surface-card rounded-2xl p-5 text-center">
+        <CasaMetafora etapa={etapa} className="mx-auto h-28 w-40" />
+        <p className="micro-label mt-4">Seu nível</p>
+        <div className="mt-2">
+          <span
+            className="inline-flex items-center rounded-full px-4 py-1.5 text-base font-bold tracking-tight"
+            style={{
+              background: `color-mix(in srgb, ${corNivel} 12%, white)`,
+              color: corNivel,
+            }}
+          >
+            {info.codigo} {info.nome}
+          </span>
+        </div>
+        <p className="mt-3 text-xs leading-relaxed text-ink-muted">{info.frase}</p>
       </div>
 
-      <section className="mt-6 space-y-4">
-        <h2 className="text-lg font-bold">Pontuação por pilar</h2>
+      <section className="surface-card mt-4 space-y-4 rounded-2xl p-5">
+        <h2 className="text-[15px] font-bold tracking-tight text-ink">Pontuação por pilar</h2>
         <BarraPilar nome="Alicerce" valor={pontos.alicerce} />
         <BarraPilar nome="Estrutura" valor={pontos.estrutura} />
         <BarraPilar nome="Acabamento" valor={pontos.acabamento} />
       </section>
 
-      <section className="mt-8 space-y-3">
-        <h2 className="text-lg font-bold">Seus 3 próximos passos</h2>
-        {passos.map((passo, i) => (
-          <div key={passo} className="surface-card flex items-start gap-3 rounded-xl p-4">
-            <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-              {i + 1}
-            </span>
-            <p className="text-sm leading-snug">{passo}</p>
-          </div>
-        ))}
+      <section className="surface-card mt-4 rounded-2xl p-5">
+        <h2 className="text-[15px] font-bold tracking-tight text-ink">Seus 3 próximos passos</h2>
+        <ul className="mt-3 space-y-3">
+          {passos.map((passo) => (
+            <li key={passo} className="flex items-start gap-3">
+              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
+              <p className="text-sm leading-snug text-ink">{passo}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <div className="mt-8 space-y-3">
-        <Button size="lg" className="h-14 w-full text-base font-bold" onClick={compartilhar}>
+      <div className="mt-6 space-y-3">
+        <Button
+          size="lg"
+          className="h-12 w-full rounded-lg font-semibold"
+          onClick={compartilhar}
+        >
           <Share2 className="size-4" /> Compartilhar resultado
         </Button>
-        <p className="flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
-          <Check className="size-3.5 text-primary" /> Resposta registrada
+        <p className="flex items-center justify-center gap-2 text-center text-xs text-ink-muted">
+          <Check className="size-3.5" style={{ color: "var(--flag-safe)" }} /> Resposta registrada
         </p>
         <Link
           to="/painel"
-          className="block text-center text-xs text-muted-foreground/60 hover:text-primary"
+          className="block text-center text-xs text-ink-muted hover:text-primary"
         >
           Painel do evento
         </Link>

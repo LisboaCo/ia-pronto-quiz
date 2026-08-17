@@ -3,10 +3,10 @@ interface Props {
   className?: string;
 }
 
-/** Metáfora visual de construção: terreno, fundação, estrutura, casa pronta. */
+/** Metáfora visual de construção em traço fino: terreno, fundação, estrutura, casa pronta. */
 export function CasaMetafora({ etapa, className }: Props) {
-  const ativo = "var(--gold)";
-  const inativo = "color-mix(in oklab, var(--gold) 18%, transparent)";
+  const ativo = "var(--v4-red)";
+  const inativo = "var(--hairline)";
 
   return (
     <svg
@@ -14,18 +14,11 @@ export function CasaMetafora({ etapa, className }: Props) {
       role="img"
       aria-label={`Etapa de construção ${etapa} de 3`}
       className={className}
+      fill="none"
     >
       {/* terreno */}
-      <line x1="10" y1="106" x2="150" y2="106" stroke={ativo} strokeWidth="3" strokeLinecap="round" />
-      <line
-        x1="18"
-        y1="112"
-        x2="142"
-        y2="112"
-        stroke={inativo}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+      <line x1="14" y1="106" x2="146" y2="106" stroke={ativo} strokeWidth="2" strokeLinecap="round" />
+      <line x1="26" y1="112" x2="134" y2="112" stroke={inativo} strokeWidth="2" strokeLinecap="round" />
       {/* fundação */}
       <rect
         x="32"
@@ -33,29 +26,24 @@ export function CasaMetafora({ etapa, className }: Props) {
         width="96"
         height="14"
         rx="3"
-        fill={etapa >= 1 ? ativo : "transparent"}
         stroke={etapa >= 1 ? ativo : inativo}
-        strokeWidth="2.5"
-        opacity={etapa >= 1 ? 0.85 : 1}
+        strokeWidth="2"
       />
       {/* estrutura */}
-      <g stroke={etapa >= 2 ? ativo : inativo} strokeWidth="3" strokeLinecap="round" fill="none">
+      <g stroke={etapa >= 2 ? ativo : inativo} strokeWidth="2" strokeLinecap="round">
         <path d="M40 92 V52" />
         <path d="M120 92 V52" />
         <path d="M40 52 H120" />
-        <path d="M40 92 L120 52" opacity={etapa >= 2 ? 0.35 : 0.6} />
       </g>
       {/* telhado e acabamento */}
       <g
         stroke={etapa >= 3 ? ativo : inativo}
-        strokeWidth="3"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
       >
-        <path d="M32 52 L80 20 L128 52" />
-        {etapa >= 3 && <rect x="70" y="66" width="20" height="26" rx="2" fill={ativo} opacity="0.9" />}
-        {etapa >= 3 && <circle cx="80" cy="40" r="5" fill={ativo} opacity="0.7" stroke="none" />}
+        <path d="M32 52 L80 22 L128 52" />
+        <rect x="70" y="66" width="20" height="26" rx="2" />
       </g>
     </svg>
   );

@@ -138,7 +138,7 @@ function DiagnosticoPage() {
         <div className="relative">
           <Marca />
         </div>
-        <div className="relative flex flex-1 flex-col justify-end py-8">
+        <div className="relative flex flex-1 flex-col justify-end pt-16 pb-8">
           <div className="surface-card relative overflow-hidden rounded-2xl p-6">
             <NumeralPilar
               numero="V4"

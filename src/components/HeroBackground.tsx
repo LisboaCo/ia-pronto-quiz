@@ -65,9 +65,9 @@ export function HeroBackground({ discreto = false, cubo = false, className }: Pr
             <img
               src={cuboAsset.url}
               alt=""
-              className="absolute inset-x-0 h-[55%] w-full object-cover"
+              className="absolute inset-x-0 h-[60%] w-full object-cover"
               style={{
-                top: "1.5rem",
+                top: "-0.5rem",
                 objectPosition: "center 20%",
                 opacity: 0.32,
                 mixBlendMode: "multiply",

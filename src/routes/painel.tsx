@@ -95,6 +95,7 @@ function Dashboard() {
       (["V0", "V1", "V2", "V3"] as const).map((codigo) => {
         const quantidade = dados.filter((d) => d.nivel === codigo).length;
         return {
+          codigo,
           nome: `${codigo} ${NIVEIS[codigo].nome}`,
           quantidade,
           percentual: total ? Math.round((quantidade / total) * 100) : 0,

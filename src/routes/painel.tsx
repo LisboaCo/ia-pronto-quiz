@@ -188,9 +188,15 @@ function Dashboard() {
 
       <section className="mt-6 grid gap-6 xl:grid-cols-3">
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-2xl font-bold tracking-tight text-ink">Distribuição por nível</h2>
-          <GraficoBarras dados={porNivel} altura={320} destaque />
+          <h2 className="text-2xl font-bold tracking-tight text-ink">
+            Em qual nível está cada empresa
+          </h2>
+          <p className="mt-1 text-sm text-ink-muted">
+            Percentual da sala em cada fase da construção.
+          </p>
+          <PiramideNiveis faixas={porNivel} />
         </div>
+
 
         <div className="surface-card rounded-2xl p-6">
           <h2 className="text-2xl font-bold tracking-tight text-ink">Faixa de faturamento</h2>

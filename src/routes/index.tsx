@@ -62,10 +62,7 @@ function corPorFaixa(valor: number) {
 function Marca() {
   return (
     <header className="flex items-center justify-center gap-2 py-5">
-      <span className="size-2 rounded-full bg-primary" aria-hidden />
-      <span className="text-[11px] font-semibold tracking-wider text-ink-muted uppercase">
-        Diagnóstico IA
-      </span>
+      <Chip cor="var(--v4-red)">Diagnóstico IA</Chip>
     </header>
   );
 }
@@ -534,9 +531,6 @@ function Resultado({
           Painel do evento
         </Link>
       </div>
-      <Chip cor="var(--v4-red)">
-        <span className="sr-only">Diagnóstico IA</span>
-      </Chip>
     </main>
   );
 }

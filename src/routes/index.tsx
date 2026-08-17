@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowLeft, Check, Share2 } from "lucide-react";
 
-import { CasaMetafora } from "@/components/CasaMetafora";
+import { HeroBackground, NumeralPilar } from "@/components/HeroBackground";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -133,12 +133,19 @@ function DiagnosticoPage() {
 
   if (etapa === "abertura") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
-        <Marca />
-        <div className="flex flex-1 flex-col justify-center py-6">
-          <div className="surface-card rounded-2xl p-5">
-            <CasaMetafora etapa={3} className="mx-auto h-28 w-40" />
-            <div className="mt-5 space-y-3 text-center">
+      <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
+        <HeroBackground />
+        <div className="relative">
+          <Marca />
+        </div>
+        <div className="relative flex flex-1 flex-col justify-center py-6">
+          <div className="surface-card relative overflow-hidden rounded-2xl p-6">
+            <NumeralPilar
+              numero={3}
+              className="absolute -top-4 right-3 text-[92px] leading-none"
+            />
+            <div className="relative space-y-3">
+              <p className="micro-label">Diagnóstico em 15 perguntas</p>
               <h1 className="text-3xl leading-tight font-bold text-ink">
                 Sua empresa está pronta para a <span className="text-primary">IA</span>?
               </h1>
@@ -146,12 +153,16 @@ function DiagnosticoPage() {
                 Descubra o nível de maturidade do seu negócio em 3 minutos
               </p>
             </div>
-            <Button size="lg" className="mt-6 h-12 w-full rounded-lg font-semibold" onClick={iniciar}>
+            <Button
+              size="lg"
+              className="relative mt-6 h-12 w-full rounded-lg font-semibold"
+              onClick={iniciar}
+            >
               Começar diagnóstico
             </Button>
           </div>
         </div>
-        <footer className="pb-8 text-center text-xs text-ink-muted">
+        <footer className="relative pb-8 text-center text-xs text-ink-muted">
           15 perguntas · resultado imediato
         </footer>
       </main>
@@ -160,19 +171,25 @@ function DiagnosticoPage() {
 
   if (etapa === "divisoria") {
     return (
-      <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
-        <Marca />
-        <div className="flex flex-1 flex-col justify-center">
-          <div className="surface-card rounded-2xl p-5 text-center">
-            <CasaMetafora etapa={pilarAtual.numero as 1 | 2 | 3} className="mx-auto h-32 w-44" />
-            <div className="mt-5 space-y-3">
+      <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
+        <HeroBackground />
+        <div className="relative">
+          <Marca />
+        </div>
+        <div className="relative flex flex-1 flex-col justify-center">
+          <div className="surface-card relative overflow-hidden rounded-2xl p-6">
+            <NumeralPilar
+              numero={pilarAtual.numero}
+              className="absolute -top-6 right-2 text-[120px] leading-none"
+            />
+            <div className="relative space-y-3">
               <p className="micro-label">Pilar {pilarAtual.numero}</p>
-              <h2 className="text-2xl font-bold text-ink">{pilarAtual.nome}</h2>
+              <h2 className="text-3xl font-bold text-ink">{pilarAtual.nome}</h2>
               <p className="text-xs text-ink-muted">{pilarAtual.legenda}</p>
             </div>
             <Button
               size="lg"
-              className="mt-6 h-12 w-full rounded-lg font-semibold"
+              className="relative mt-6 h-12 w-full rounded-lg font-semibold"
               onClick={() => setEtapa("pergunta")}
             >
               Continuar
@@ -183,6 +200,7 @@ function DiagnosticoPage() {
       </main>
     );
   }
+
 
   if (etapa === "pergunta") {
     const progresso = ((indice + 1) / PERGUNTAS.length) * 100;
@@ -475,11 +493,14 @@ function Resultado({
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-10">
-      <Marca />
-      <div className="surface-card rounded-2xl p-5 text-center">
-        <CasaMetafora etapa={etapa} className="mx-auto h-28 w-40" />
-        <p className="micro-label mt-4">Seu nível</p>
+    <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-10">
+      <HeroBackground discreto />
+      <div className="relative">
+        <Marca />
+      </div>
+      <div className="surface-card relative rounded-2xl p-5 text-center">
+        <p className="micro-label">Seu nível</p>
+
         <div className="mt-2">
           <span
             className="inline-flex items-center rounded-full px-4 py-1.5 text-base font-bold tracking-tight"

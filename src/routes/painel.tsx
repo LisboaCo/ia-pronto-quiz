@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { HeroBackground } from "@/components/HeroBackground";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FAIXAS_FATURAMENTO, NIVEIS, PERGUNTAS } from "@/lib/diagnostico";
@@ -128,51 +129,80 @@ function Dashboard() {
 
   return (
     <main className="min-h-screen bg-surface px-8 py-8">
-      <header className="flex flex-wrap items-end justify-between gap-6">
-        <div>
-          <p className="text-xs font-medium tracking-wider text-primary uppercase">
-            Diagnóstico IA · Painel ao vivo
-          </p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink">
-            Maturidade em IA e Tecnologia
-          </h1>
-        </div>
-        <div className="surface-card rounded-2xl p-5 text-right">
-          <p className="text-xs font-medium tracking-wider text-ink-muted uppercase">
-            Respondentes
-          </p>
-          <p className="mt-1 text-6xl leading-none font-bold tracking-tight text-primary">{total}</p>
+      <header className="surface-card relative overflow-hidden rounded-2xl px-8 py-7">
+        <HeroBackground discreto />
+        <div className="relative flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="micro-label" style={{ color: "var(--color-v4-red)" }}>
+              Diagnóstico IA · Painel ao vivo
+            </p>
+            <h1
+              className="mt-2 text-5xl font-bold text-ink"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              Maturidade em IA e Tecnologia
+            </h1>
+          </div>
+          <div className="text-right">
+            <p className="micro-label">Respondentes</p>
+            <p
+              className="mt-1 text-7xl leading-none font-bold text-primary"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              {total}
+            </p>
+          </div>
         </div>
       </header>
 
-      <section className="mt-8 grid gap-6 xl:grid-cols-3">
+      <section className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {porNivel.map((item) => (
+          <Kpi key={item.nome} rotulo={item.nome} valor={`${item.percentual}%`} />
+        ))}
+      </section>
+
+      <section className="mt-6 grid gap-6 xl:grid-cols-3">
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-xl font-bold tracking-tight text-ink">Distribuição por nível</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-ink">Distribuição por nível</h2>
           <GraficoBarras dados={porNivel} altura={320} destaque />
         </div>
 
         <div className="surface-card rounded-2xl p-6">
-          <h2 className="text-xl font-bold tracking-tight text-ink">Faixa de faturamento</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-ink">Faixa de faturamento</h2>
           <GraficoBarras dados={porFaturamento} altura={320} />
         </div>
 
         <div className="surface-card rounded-2xl p-6">
-          <h2 className="text-xl font-bold tracking-tight text-ink">Como a sala usa IA hoje</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-ink">Como a sala usa IA hoje</h2>
           <GraficoBarras dados={distribuicaoPergunta("p12")} altura={240} />
         </div>
 
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-xl font-bold tracking-tight text-ink">Quem já tentou e não vingou</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-ink">
+            Quem já tentou e não vingou
+          </h2>
           <GraficoBarras dados={distribuicaoPergunta("p15")} altura={240} />
         </div>
       </section>
 
-      <p className="mt-8 text-center text-xs text-ink-muted">
+      <p className="mt-8 text-center text-sm text-ink-muted">
         Atualização automática a cada 10 segundos.
       </p>
     </main>
   );
 }
+
+function Kpi({ rotulo, valor }: { rotulo: string; valor: string }) {
+  return (
+    <div className="surface-card rounded-2xl p-6">
+      <p className="micro-label">{rotulo}</p>
+      <p className="mt-2 text-5xl font-bold text-ink" style={{ letterSpacing: "-0.02em" }}>
+        {valor}
+      </p>
+    </div>
+  );
+}
+
 
 interface ItemGrafico {
   nome: string;

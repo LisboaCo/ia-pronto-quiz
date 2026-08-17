@@ -44,7 +44,7 @@ function PainelPage() {
 
   if (!liberado) {
     return (
-      <main className="flex min-h-screen items-center justify-center px-6">
+      <main className="flex min-h-screen items-center justify-center bg-surface px-6">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -53,17 +53,17 @@ function PainelPage() {
           }}
           className="surface-card w-full max-w-sm space-y-4 rounded-2xl p-8"
         >
-          <h1 className="text-2xl font-extrabold">Painel do evento</h1>
-          <p className="text-sm text-muted-foreground">Acesso restrito à organização.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-ink">Painel do evento</h1>
+          <p className="text-xs text-ink-muted">Acesso restrito à organização.</p>
           <Input
             type="password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             placeholder="Senha"
-            className="h-12"
+            className="h-11 rounded-md"
           />
-          {erro && <p className="text-sm text-destructive">{erro}</p>}
-          <Button type="submit" className="h-12 w-full font-bold">
+          {erro && <p className="text-xs text-destructive">{erro}</p>}
+          <Button type="submit" className="h-11 w-full rounded-lg font-semibold">
             Entrar
           </Button>
         </form>
@@ -126,47 +126,47 @@ function Dashboard() {
   );
 
   return (
-    <main className="min-h-screen px-8 py-8">
-      <header className="flex flex-wrap items-end justify-between gap-6 border-b border-border pb-6">
+    <main className="min-h-screen bg-surface px-8 py-8">
+      <header className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <p className="text-xs font-bold tracking-[0.3em] text-primary uppercase">
+          <p className="text-xs font-medium tracking-wider text-primary uppercase">
             Diagnóstico IA · Painel ao vivo
           </p>
-          <h1 className="mt-2 text-4xl font-extrabold">Maturidade em IA e Tecnologia</h1>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-ink">
+            Maturidade em IA e Tecnologia
+          </h1>
         </div>
-        <div className="text-right">
-          <p className="text-xs font-bold tracking-[0.2em] text-muted-foreground uppercase">
+        <div className="surface-card rounded-2xl p-5 text-right">
+          <p className="text-xs font-medium tracking-wider text-ink-muted uppercase">
             Respondentes
           </p>
-          <p className="font-display text-7xl leading-none font-extrabold text-gradient-gold">
-            {total}
-          </p>
+          <p className="mt-1 text-6xl leading-none font-bold tracking-tight text-primary">{total}</p>
         </div>
       </header>
 
       <section className="mt-8 grid gap-6 xl:grid-cols-3">
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-xl font-bold">Distribuição por nível</h2>
+          <h2 className="text-xl font-bold tracking-tight text-ink">Distribuição por nível</h2>
           <GraficoBarras dados={porNivel} altura={320} destaque />
         </div>
 
         <div className="surface-card rounded-2xl p-6">
-          <h2 className="text-xl font-bold">Faixa de faturamento</h2>
+          <h2 className="text-xl font-bold tracking-tight text-ink">Faixa de faturamento</h2>
           <GraficoBarras dados={porFaturamento} altura={320} />
         </div>
 
         <div className="surface-card rounded-2xl p-6">
-          <h2 className="text-xl font-bold">Como a sala usa IA hoje</h2>
+          <h2 className="text-xl font-bold tracking-tight text-ink">Como a sala usa IA hoje</h2>
           <GraficoBarras dados={distribuicaoPergunta("p12")} altura={240} />
         </div>
 
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-xl font-bold">Quem já tentou e não vingou</h2>
+          <h2 className="text-xl font-bold tracking-tight text-ink">Quem já tentou e não vingou</h2>
           <GraficoBarras dados={distribuicaoPergunta("p15")} altura={240} />
         </div>
       </section>
 
-      <p className="mt-8 text-center text-xs text-muted-foreground">
+      <p className="mt-8 text-center text-xs text-ink-muted">
         Atualização automática a cada 10 segundos.
       </p>
     </main>
@@ -188,7 +188,14 @@ function GraficoBarras({
   altura: number;
   destaque?: boolean;
 }) {
-  const cores = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)"];
+  const cores = [
+    "var(--v4-red)",
+    "var(--flag-renew)",
+    "var(--flag-care)",
+    "var(--flag-safe)",
+    "var(--flag-onboarding)",
+    "var(--flag-warn)",
+  ];
   return (
     <div style={{ height: altura }} className="mt-4 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -201,7 +208,7 @@ function GraficoBarras({
             tickLine={false}
             axisLine={false}
             tick={{
-              fill: "var(--foreground)",
+              fill: "var(--ink)",
               fontSize: destaque ? 18 : 14,
               fontWeight: 600,
             }}
@@ -215,9 +222,9 @@ function GraficoBarras({
               position="right"
               formatter={(valor: number) => `${valor}%`}
               style={{
-                fill: "var(--foreground)",
+                fill: "var(--ink)",
                 fontSize: destaque ? 24 : 18,
-                fontWeight: 800,
+                fontWeight: 700,
               }}
             />
           </Bar>

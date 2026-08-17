@@ -131,7 +131,29 @@ function Dashboard() {
   );
 
   return (
-    <main className="min-h-screen bg-surface px-8 py-8">
+    <main className="relative min-h-screen overflow-hidden bg-surface px-8 py-8">
+      {/* marca V4 como textura de fundo do painel */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0"
+        style={{
+          backgroundImage: `url(${cuboAsset.url})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right -8% bottom -12%",
+          backgroundSize: "58% auto",
+          opacity: 0.14,
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, var(--surface) 0%, color-mix(in srgb, var(--surface) 82%, transparent) 55%, transparent 100%)",
+        }}
+      />
+
+      <div className="relative">
       <header className="surface-card relative overflow-hidden rounded-2xl px-8 py-7">
         <HeroBackground discreto />
         <div className="relative flex flex-wrap items-end justify-between gap-6">

@@ -11,7 +11,9 @@ import {
   YAxis,
 } from "recharts";
 
+import cuboAsset from "@/assets/v4-cubo.png.asset.json";
 import { HeroBackground } from "@/components/HeroBackground";
+import { PiramideNiveis } from "@/components/PiramideNiveis";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FAIXAS_FATURAMENTO, NIVEIS, PERGUNTAS } from "@/lib/diagnostico";

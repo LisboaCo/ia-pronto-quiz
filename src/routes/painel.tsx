@@ -253,10 +253,10 @@ function GraficoBarras({
 }) {
   const cores = [
     "var(--v4-red)",
-    "var(--flag-renew)",
     "var(--flag-care)",
     "var(--flag-safe)",
-    "var(--flag-onboarding)",
+    "var(--ink)",
+    "var(--ink-muted)",
     "var(--flag-warn)",
   ];
   return (

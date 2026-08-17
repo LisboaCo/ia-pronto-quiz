@@ -6,6 +6,7 @@ import {
   Cell,
   LabelList,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -212,6 +213,16 @@ function GraficoBarras({
               fontSize: destaque ? 18 : 14,
               fontWeight: 600,
             }}
+          />
+          <Tooltip
+            contentStyle={{
+              borderRadius: 8,
+              border: "1px solid var(--hairline)",
+              background: "var(--card)",
+              fontSize: 12,
+              color: "var(--ink)",
+            }}
+            formatter={(valor: number) => [`${valor} respostas`, ""]}
           />
           <Bar dataKey="quantidade" radius={[0, 8, 8, 0]} barSize={destaque ? 42 : 26}>
             {dados.map((item, i) => (

@@ -219,6 +219,7 @@ function Dashboard() {
       <p className="mt-8 text-center text-sm text-ink-muted">
         Atualização automática a cada 10 segundos.
       </p>
+      </div>
     </main>
   );
 }

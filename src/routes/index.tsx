@@ -138,7 +138,7 @@ function DiagnosticoPage() {
         <div className="relative">
           <Marca />
         </div>
-        <div className="relative flex flex-1 flex-col justify-end pt-16 pb-8">
+        <div className="relative flex flex-1 flex-col justify-end pt-28 pb-4">
           <div className="surface-card relative overflow-hidden rounded-2xl p-6">
             <NumeralPilar
               numero="V4"
@@ -162,7 +162,7 @@ function DiagnosticoPage() {
             </Button>
           </div>
         </div>
-        <footer className="relative pb-12 text-center text-xs text-ink-muted">
+        <footer className="relative pb-6 text-center text-xs text-ink-muted">
           15 perguntas · resultado imediato
         </footer>
       </main>

@@ -133,12 +133,12 @@ function DiagnosticoPage() {
 
   if (etapa === "abertura") {
     return (
-      <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5">
-        <HeroBackground />
+      <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-12">
+        <HeroBackground cubo />
         <div className="relative">
           <Marca />
         </div>
-        <div className="relative flex flex-1 flex-col justify-center py-6">
+        <div className="relative flex flex-1 flex-col justify-end py-8">
           <div className="surface-card relative overflow-hidden rounded-2xl p-6">
             <NumeralPilar
               numero="V4"
@@ -162,7 +162,7 @@ function DiagnosticoPage() {
             </Button>
           </div>
         </div>
-        <footer className="relative pb-8 text-center text-xs text-ink-muted">
+        <footer className="relative pb-12 text-center text-xs text-ink-muted">
           15 perguntas · resultado imediato
         </footer>
       </main>

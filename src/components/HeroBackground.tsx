@@ -1,10 +1,15 @@
 import { useState } from "react";
 
+import cuboAsset from "@/assets/v4-cubo.png.asset.json";
+
 interface Props {
   /** Versão discreta: apenas o brilho radial, sem malha de pontos nem imagem. */
   discreto?: boolean;
+  /** Exibe a imagem do cubo V4 como background superior (homepage). */
+  cubo?: boolean;
   className?: string;
 }
+
 
 const MASCARA =
   "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.55) 30%, black 62%), linear-gradient(to bottom, transparent 0%, black 14%, black 84%, transparent 100%)";

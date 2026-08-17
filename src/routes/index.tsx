@@ -141,7 +141,7 @@ function DiagnosticoPage() {
         <div className="relative flex flex-1 flex-col justify-center py-6">
           <div className="surface-card relative overflow-hidden rounded-2xl p-6">
             <NumeralPilar
-              numero={3}
+              numero="V4"
               className="absolute -top-4 right-3 text-[92px] leading-none"
             />
             <div className="relative space-y-3">

@@ -79,14 +79,15 @@ export function HeroBackground({ discreto = false, className }: Props) {
 }
 
 /** Numeral grande do pilar usado como elemento gráfico de fundo. */
-export function NumeralPilar({ numero, className }: { numero: number; className?: string }) {
+export function NumeralPilar({ numero, className }: { numero: number | string; className?: string }) {
+  const rotulo = typeof numero === "number" ? String(numero).padStart(2, "0") : numero;
   return (
     <span
       aria-hidden
       className={`pointer-events-none font-bold ${className ?? ""}`}
       style={{ letterSpacing: "-0.06em", color: "var(--color-v4-red)", opacity: 0.12 }}
     >
-      {String(numero).padStart(2, "0")}
+      {rotulo}
     </span>
   );
 }

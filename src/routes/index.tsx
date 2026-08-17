@@ -493,11 +493,14 @@ function Resultado({
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-10">
-      <Marca />
-      <div className="surface-card rounded-2xl p-5 text-center">
-        <CasaMetafora etapa={etapa} className="mx-auto h-28 w-40" />
-        <p className="micro-label mt-4">Seu nível</p>
+    <main className="relative mx-auto flex min-h-screen max-w-md flex-col bg-surface px-5 pb-10">
+      <HeroBackground discreto />
+      <div className="relative">
+        <Marca />
+      </div>
+      <div className="surface-card relative rounded-2xl p-5 text-center">
+        <p className="micro-label">Seu nível</p>
+
         <div className="mt-2">
           <span
             className="inline-flex items-center rounded-full px-4 py-1.5 text-base font-bold tracking-tight"

@@ -11,7 +11,9 @@ import {
   YAxis,
 } from "recharts";
 
+import cuboAsset from "@/assets/v4-cubo.png.asset.json";
 import { HeroBackground } from "@/components/HeroBackground";
+import { PiramideNiveis } from "@/components/PiramideNiveis";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FAIXAS_FATURAMENTO, NIVEIS, PERGUNTAS } from "@/lib/diagnostico";
@@ -93,6 +95,7 @@ function Dashboard() {
       (["V0", "V1", "V2", "V3"] as const).map((codigo) => {
         const quantidade = dados.filter((d) => d.nivel === codigo).length;
         return {
+          codigo,
           nome: `${codigo} ${NIVEIS[codigo].nome}`,
           quantidade,
           percentual: total ? Math.round((quantidade / total) * 100) : 0,
@@ -128,7 +131,29 @@ function Dashboard() {
   );
 
   return (
-    <main className="min-h-screen bg-surface px-8 py-8">
+    <main className="relative min-h-screen overflow-hidden bg-surface px-8 py-8">
+      {/* marca V4 como textura de fundo do painel */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0"
+        style={{
+          backgroundImage: `url(${cuboAsset.url})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right -8% bottom -12%",
+          backgroundSize: "58% auto",
+          opacity: 0.14,
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, var(--surface) 0%, color-mix(in srgb, var(--surface) 82%, transparent) 55%, transparent 100%)",
+        }}
+      />
+
+      <div className="relative">
       <header className="surface-card relative overflow-hidden rounded-2xl px-8 py-7">
         <HeroBackground discreto />
         <div className="relative flex flex-wrap items-end justify-between gap-6">
@@ -163,9 +188,15 @@ function Dashboard() {
 
       <section className="mt-6 grid gap-6 xl:grid-cols-3">
         <div className="surface-card rounded-2xl p-6 xl:col-span-2">
-          <h2 className="text-2xl font-bold tracking-tight text-ink">Distribuição por nível</h2>
-          <GraficoBarras dados={porNivel} altura={320} destaque />
+          <h2 className="text-2xl font-bold tracking-tight text-ink">
+            Em qual nível está cada empresa
+          </h2>
+          <p className="mt-1 text-sm text-ink-muted">
+            Percentual da sala em cada fase da construção.
+          </p>
+          <PiramideNiveis faixas={porNivel} />
         </div>
+
 
         <div className="surface-card rounded-2xl p-6">
           <h2 className="text-2xl font-bold tracking-tight text-ink">Faixa de faturamento</h2>
@@ -188,6 +219,7 @@ function Dashboard() {
       <p className="mt-8 text-center text-sm text-ink-muted">
         Atualização automática a cada 10 segundos.
       </p>
+      </div>
     </main>
   );
 }
@@ -221,10 +253,10 @@ function GraficoBarras({
 }) {
   const cores = [
     "var(--v4-red)",
-    "var(--flag-renew)",
     "var(--flag-care)",
     "var(--flag-safe)",
-    "var(--flag-onboarding)",
+    "var(--ink)",
+    "var(--ink-muted)",
     "var(--flag-warn)",
   ];
   return (

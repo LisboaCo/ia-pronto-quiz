@@ -80,9 +80,18 @@ function PainelPage() {
 
 function Dashboard() {
   const [dados, setDados] = useState<RespostaRegistro[]>([]);
+  const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
-    const atualizar = () => setDados(listarRespostas());
+    const atualizar = async () => {
+      setCarregando(true);
+      try {
+        const respostas = await listarRespostas();
+        setDados(respostas);
+      } finally {
+        setCarregando(false);
+      }
+    };
     atualizar();
     const timer = setInterval(atualizar, 10000);
     return () => clearInterval(timer);

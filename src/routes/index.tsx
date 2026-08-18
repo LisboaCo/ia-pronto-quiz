@@ -253,9 +253,9 @@ function DiagnosticoPage() {
     return (
       <Cadastro
         pontos={pontos}
-        onConcluir={(dados) => {
+        onConcluir={async (dados) => {
           const nivel = calcularNivel(pontos.alicerce, pontos.estrutura, pontos.acabamento);
-          salvarResposta({
+          await salvarResposta({
             respostas,
             pontos_alicerce: pontos.alicerce,
             pontos_estrutura: pontos.estrutura,
@@ -293,7 +293,7 @@ function Cadastro({
   onConcluir,
 }: {
   pontos: { alicerce: number; estrutura: number; acabamento: number };
-  onConcluir: (dados: DadosCadastro) => void;
+  onConcluir: (dados: DadosCadastro) => Promise<void>;
 }) {
   void pontos;
   const [nome, setNome] = useState("");
@@ -305,7 +305,7 @@ function Cadastro({
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
-  function enviar(evento: React.FormEvent) {
+  async function enviar(evento: React.FormEvent) {
     evento.preventDefault();
     const digitos = whatsapp.replace(/\D/g, "");
     if (nome.trim().length < 2) return setErro("Informe seu nome completo.");
@@ -315,14 +315,18 @@ function Cadastro({
     if (!consentimento) return setErro("É necessário autorizar o contato para ver o resultado.");
     setErro("");
     setEnviando(true);
-    onConcluir({
-      nome: nome.trim().slice(0, 120),
-      whatsapp,
-      email: email.trim().slice(0, 160),
-      segmento: segmento.trim().slice(0, 120),
-      faixa_faturamento: faixa,
-      consentimento,
-    });
+    try {
+      await onConcluir({
+        nome: nome.trim().slice(0, 120),
+        whatsapp,
+        email: email.trim().slice(0, 160),
+        segmento: segmento.trim().slice(0, 120),
+        faixa_faturamento: faixa,
+        consentimento,
+      });
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (

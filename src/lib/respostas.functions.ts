@@ -35,7 +35,8 @@ interface PayloadSalvar {
 function getBaseUrl() {
   const url = process.env["POSTGREST_DASHBOARD_TVSIM"];
   if (!url) throw new Error("POSTGREST_DASHBOARD_TVSIM não configurado");
-  return url.replace(/\/$/, "");
+  const clean = url.replace(/\/$/, "");
+  return clean.startsWith("http://") || clean.startsWith("https://") ? clean : `https://${clean}`;
 }
 
 const headers = {

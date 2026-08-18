@@ -75,15 +75,20 @@ export const salvarResposta = createServerFn({ method: "POST" })
 
 export const listarRespostas = createServerFn({ method: "GET" }).handler(async () => {
   const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/respostas?select=*&order=criado_em.desc`, {
+  const url = `${baseUrl}/respostas?select=*&order=criado_em.desc`;
+  console.log("[listarRespostas] URL:", url);
+  const response = await fetch(url, {
     method: "GET",
     headers,
   });
 
   if (!response.ok) {
     const text = await response.text().catch(() => "");
+    console.error("[listarRespostas] erro:", response.status, text);
     throw new Error(`Falha ao listar respostas: ${response.status} ${text}`);
   }
 
-  return (await response.json()) as RespostaRegistro[];
+  const json = (await response.json()) as RespostaRegistro[];
+  console.log("[listarRespostas] count:", json.length);
+  return json;
 });

@@ -32,6 +32,7 @@ P14. "Existe alguma regra sobre o que pode ou não ser colocado em ferramentas d
 P15. "Vocês já tentaram automatizar ou implantar alguma ferramenta que não vingou?" → "Implantamos e funciona até hoje" (2) / "Tentamos e morreu no caminho" (1) / "Nunca tentamos" (0)
 
 CÁLCULO DO NÍVEL (regra de portões em cascata, NÃO usar apenas a soma total):
+
 - Pontuação por pilar: 0 a 10.
 - V0 — TERRENO: pilar Alicerce < 6. Frase: "Sua empresa ainda está no terreno: antes da IA, é preciso construir a base."
 - V1 — ALICERCE: Alicerce >= 6, mas Estrutura < 6. Frase: "Você tem a base, mas ainda decide no escuro: o próximo passo é dominar seus números."
@@ -51,6 +52,29 @@ IMPORTANTE: todo o texto do app em português brasileiro; nunca usar travessão 
 This project was built with [Lovable](https://lovable.dev).
 
 **Live app**: https://ia-pronto-quiz.lovable.app
+
+## Quiz do Dia do Cliente
+
+O novo fluxo foi adicionado sem substituir o diagnóstico de maturidade existente:
+
+- `/dia-do-cliente`: quiz mobile com sete perguntas, identificação por nome e empresa e
+  retomada local em caso de atualização da página.
+- `/ranking`: ranking para o telão, ordenado por acertos e, em caso de empate, pelo menor
+  tempo de conclusão.
+
+Antes de publicar, execute `database/quiz-dia-cliente.sql` no banco que expõe o schema
+`dashboard_tvsim` pelo PostgREST. A migração cria uma tabela exclusiva, as funções de início e
+conclusão e uma visão pública sem o token de participação.
+
+Configurações opcionais do runtime:
+
+- `QUIZ_DIA_CLIENTE_EVENTO_ID`: identifica a edição no banco. O padrão é
+  `dia-do-cliente-2026-09-15`.
+- `RANKING_DIA_CLIENTE_SENHA`: senha do painel. O padrão temporário é `evento2026`.
+
+No ambiente local, quando `POSTGREST_DASHBOARD_TVSIM` não está configurado, o quiz usa um modo de
+preview em memória. Esses dados servem apenas para demonstração e são apagados ao reiniciar o
+servidor. Em produção, a conexão com o PostgREST continua obrigatória.
 
 ## Build with Lovable
 

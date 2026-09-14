@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DiaDoClienteRouteImport } from './routes/dia-do-cliente'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as RankingRouteImport } from './routes/ranking'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiaDoClienteRoute = DiaDoClienteRouteImport.update({
+  id: '/dia-do-cliente',
+  path: '/dia-do-cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelRoute = PainelRouteImport.update({
@@ -22,31 +29,44 @@ const PainelRoute = PainelRouteImport.update({
   path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RankingRoute = RankingRouteImport.update({
+  id: '/ranking',
+  path: '/ranking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dia-do-cliente': typeof DiaDoClienteRoute
   '/painel': typeof PainelRoute
+  '/ranking': typeof RankingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dia-do-cliente': typeof DiaDoClienteRoute
   '/painel': typeof PainelRoute
+  '/ranking': typeof RankingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dia-do-cliente': typeof DiaDoClienteRoute
   '/painel': typeof PainelRoute
+  '/ranking': typeof RankingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/painel'
+  fullPaths: '/' | '/dia-do-cliente' | '/painel' | '/ranking'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/painel'
-  id: '__root__' | '/' | '/painel'
+  to: '/' | '/dia-do-cliente' | '/painel' | '/ranking'
+  id: '__root__' | '/' | '/dia-do-cliente' | '/painel' | '/ranking'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DiaDoClienteRoute: typeof DiaDoClienteRoute
   PainelRoute: typeof PainelRoute
+  RankingRoute: typeof RankingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +78,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dia-do-cliente': {
+      id: '/dia-do-cliente'
+      path: '/dia-do-cliente'
+      fullPath: '/dia-do-cliente'
+      preLoaderRoute: typeof DiaDoClienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/painel': {
       id: '/painel'
       path: '/painel'
@@ -65,12 +92,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ranking': {
+      id: '/ranking'
+      path: '/ranking'
+      fullPath: '/ranking'
+      preLoaderRoute: typeof RankingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DiaDoClienteRoute: DiaDoClienteRoute,
   PainelRoute: PainelRoute,
+  RankingRoute: RankingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

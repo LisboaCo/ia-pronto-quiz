@@ -1,7 +1,17 @@
 -- Estrutura isolada para o quiz do Dia do Cliente.
--- Execute no banco que expõe o schema dashboard_tvsim pelo PostgREST.
+-- Execute no mesmo banco do PostgREST existente. O schema client_health deve
+-- estar exposto pela API; dashboard_tvsim permanece privado.
+
+do $$
+begin
+  if to_regnamespace('client_health') is null then
+    raise exception 'Execute esta migração no banco que contém o schema client_health';
+  end if;
+end;
+$$;
 
 create extension if not exists pgcrypto;
+create schema if not exists dashboard_tvsim;
 
 create table if not exists dashboard_tvsim.quiz_dia_cliente_respostas (
   id uuid primary key default gen_random_uuid(),
@@ -148,7 +158,58 @@ from dashboard_tvsim.quiz_dia_cliente_respostas
 where status = 'concluida';
 
 revoke all on dashboard_tvsim.quiz_dia_cliente_respostas from public;
-grant usage on schema dashboard_tvsim to public;
-grant select on dashboard_tvsim.quiz_dia_cliente_ranking to public;
-grant execute on function dashboard_tvsim.iniciar_quiz_dia_cliente(text, text, text) to public;
-grant execute on function dashboard_tvsim.finalizar_quiz_dia_cliente(uuid, uuid, jsonb, smallint) to public;
+revoke all on schema dashboard_tvsim from public;
+revoke all on dashboard_tvsim.quiz_dia_cliente_ranking from public;
+revoke all on function dashboard_tvsim.iniciar_quiz_dia_cliente(text, text, text) from public;
+revoke all on function dashboard_tvsim.finalizar_quiz_dia_cliente(uuid, uuid, jsonb, smallint) from public;
+
+-- Fachada no schema que o PostgREST existente já expõe.
+create or replace function client_health.iniciar_quiz_dia_cliente(
+  p_evento text,
+  p_nome text,
+  p_empresa text
+)
+returns jsonb
+language sql
+security definer
+set search_path = pg_catalog, client_health, dashboard_tvsim
+as $$
+  select dashboard_tvsim.iniciar_quiz_dia_cliente(p_evento, p_nome, p_empresa);
+$$;
+
+create or replace function client_health.finalizar_quiz_dia_cliente(
+  p_id uuid,
+  p_token uuid,
+  p_respostas jsonb,
+  p_pontuacao smallint
+)
+returns jsonb
+language sql
+security definer
+set search_path = pg_catalog, client_health, dashboard_tvsim
+as $$
+  select dashboard_tvsim.finalizar_quiz_dia_cliente(
+    p_id,
+    p_token,
+    p_respostas,
+    p_pontuacao
+  );
+$$;
+
+create or replace view client_health.quiz_dia_cliente_ranking as
+select
+  id,
+  evento,
+  nome,
+  empresa,
+  pontuacao,
+  duracao_ms,
+  concluido_em
+from dashboard_tvsim.quiz_dia_cliente_ranking;
+
+grant usage on schema client_health to public;
+grant select on client_health.quiz_dia_cliente_ranking to public;
+grant execute on function client_health.iniciar_quiz_dia_cliente(text, text, text) to public;
+grant execute on function client_health.finalizar_quiz_dia_cliente(uuid, uuid, jsonb, smallint) to public;
+
+select pg_notify('pgrst', 'reload schema');

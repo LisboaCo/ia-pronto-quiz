@@ -62,9 +62,10 @@ O novo fluxo foi adicionado sem substituir o diagnóstico de maturidade existent
 - `/ranking`: ranking para o telão, ordenado por acertos e, em caso de empate, pelo menor
   tempo de conclusão.
 
-Antes de publicar, execute `database/quiz-dia-cliente.sql` no banco que expõe o schema
-`dashboard_tvsim` pelo PostgREST. A migração cria uma tabela exclusiva, as funções de início e
-conclusão e uma visão pública sem o token de participação.
+Antes de publicar, execute `database/quiz-dia-cliente.sql` no mesmo banco do PostgREST existente,
+que expõe o schema `client_health`. A migração mantém os dados no schema privado `dashboard_tvsim`
+e cria no `client_health` apenas as funções e a visão necessárias para a API, sem expor o token de
+participação no ranking.
 
 Configurações opcionais do runtime:
 
